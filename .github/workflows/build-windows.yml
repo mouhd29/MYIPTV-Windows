@@ -6,6 +6,7 @@ on:
     paths:
       - 'MYIPTV-Windows11-Source*.zip'
       - '.github/workflows/build-windows.yml'
+      - 'localization.js'
   workflow_dispatch:
 
 permissions:
@@ -30,6 +31,17 @@ jobs:
           if (-not (Test-Path 'windows-project/package.json')) {
             throw 'ZIP must contain package.json at its root.'
           }
+
+      - name: Add Arabic and English UI
+        shell: pwsh
+        run: |
+          Copy-Item -LiteralPath 'localization.js' -Destination 'windows-project/localization.js'
+          $html = Get-Content -Raw -Encoding UTF8 'windows-project/index.html'
+          $html = $html.Replace('</body>', '<script src="localization.js"></script></body>')
+          [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'windows-project/index.html'), $html, [System.Text.UTF8Encoding]::new($false))
+          $package = Get-Content -Raw -Encoding UTF8 'windows-project/package.json'
+          $package = $package.Replace('"index.html","assets/**/*"', '"index.html","localization.js","assets/**/*"')
+          [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'windows-project/package.json'), $package, [System.Text.UTF8Encoding]::new($false))
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
