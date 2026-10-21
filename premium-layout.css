@@ -1,0 +1,35 @@
+/* Original premium TV-player inspired layout; no third-party assets */
+:root{font-family:Inter,"Segoe UI",Arial,sans-serif;background:#070a12;color:#f8f9ff}
+body{background:radial-gradient(ellipse at 75% -15%,#24356b55,transparent 50%),#070a12}
+.app{grid-template-columns:260px minmax(0,1fr)}
+.side{background:linear-gradient(180deg,#111827 0%,#0a1020 100%);border-right:1px solid #26334d;padding:23px 16px}
+.brand{padding:0 10px 29px;border-bottom:1px solid #29334a;margin-bottom:15px}
+.brand img{width:91px;height:77px}
+.nav{font-size:14px;letter-spacing:.1px;padding:15px 16px;border-radius:14px;transition:background .2s,transform .2s}
+.nav:hover{transform:translateX(3px);background:#263459}
+.nav.active{background:linear-gradient(100deg,#6142db,#2b3c87);box-shadow:0 8px 25px #3923ac44}
+.main{padding:30px 38px 65px;background:radial-gradient(ellipse at top right,#25264d55,transparent 50%)}
+.top{padding-bottom:20px;border-bottom:1px solid #222c42}
+.top h1{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.search{border-radius:30px;background:#121b2b;border:1px solid #364560;min-width:270px}
+.hero{border-radius:25px;min-height:270px;margin-top:26px;background:linear-gradient(110deg,#121e38,#2b2469 63%,#142951);border:1px solid #5b5da188;box-shadow:0 22px 65px #0005}
+.hero h2{font-size:35px}
+.hero img{width:230px;height:210px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:17px}
+.tile{min-height:195px;border-radius:18px;padding:17px;background:linear-gradient(160deg,#172137,#101827);border:1px solid #34425d;transition:transform .2s,border-color .2s,box-shadow .2s}
+.tile:hover{transform:translateY(-4px);border-color:#8b74ff;box-shadow:0 15px 35px #0008}
+.thumb{width:74px;height:74px;border-radius:16px;background:linear-gradient(130deg,#47389a,#203d78)}
+.name{font-size:14px}
+.actions button,.btn{border-radius:11px}
+.actions button:first-child,.btn:not(.ghost):not(.red){background:linear-gradient(120deg,#7047ee,#4b62d9)}
+.chip{border-radius:22px;background:#172137}
+.chip.selected{background:#6b4ce4}
+.player{background:#02040af5;backdrop-filter:blur(15px)}
+.playerbox{width:min(100%,1400px);border-radius:20px;background:#0b101e;border:1px solid #38486b;box-shadow:0 30px 100px #000c}
+.playerhead{padding:18px 24px}
+.playerhead strong{font-size:18px}
+video{max-height:78vh}
+.notice{background:#0c1526;line-height:1.6}
+.main[dir=rtl] .top,.main[dir=rtl] .toolbar{direction:rtl}
+.main[dir=rtl] .nav{text-align:right}
+@media(max-width:850px){.app{grid-template-columns:75px minmax(0,1fr)}.main{padding:18px}.hero img{width:105px}.search{min-width:0;width:180px}}
