@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'MYIPTV-Windows11-Source.zip'
+      - 'MYIPTV-Windows11-Source*.zip'
       - '.github/workflows/build-windows.yml'
   workflow_dispatch:
 
@@ -22,10 +22,11 @@ jobs:
       - name: Extract Windows project
         shell: pwsh
         run: |
-          if (-not (Test-Path 'MYIPTV-Windows11-Source.zip')) {
+          $archive = Get-ChildItem -File -Filter 'MYIPTV-Windows11-Source*.zip' | Select-Object -First 1
+          if (-not $archive) {
             throw 'Upload MYIPTV-Windows11-Source.zip to the repository root before building.'
           }
-          Expand-Archive -Path 'MYIPTV-Windows11-Source.zip' -DestinationPath 'windows-project' -Force
+          Expand-Archive -LiteralPath $archive.FullName -DestinationPath 'windows-project' -Force
           if (-not (Test-Path 'windows-project/package.json')) {
             throw 'ZIP must contain package.json at its root.'
           }
