@@ -7,6 +7,7 @@ on:
       - 'MYIPTV-Windows11-Source*.zip'
       - '.github/workflows/build-windows.yml'
       - 'localization.js'
+      - 'xtream-recent.js'
   workflow_dispatch:
 
 permissions:
@@ -36,11 +37,12 @@ jobs:
         shell: pwsh
         run: |
           Copy-Item -LiteralPath 'localization.js' -Destination 'windows-project/localization.js'
+          Copy-Item -LiteralPath 'xtream-recent.js' -Destination 'windows-project/xtream-recent.js'
           $html = Get-Content -Raw -Encoding UTF8 'windows-project/index.html'
-          $html = $html.Replace('</body>', '<script src="localization.js"></script></body>')
+          $html = $html.Replace('</body>', '<script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.js"></script><script src="xtream-recent.js"></script><script src="localization.js"></script></body>')
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'windows-project/index.html'), $html, [System.Text.UTF8Encoding]::new($false))
           $package = Get-Content -Raw -Encoding UTF8 'windows-project/package.json'
-          $package = $package.Replace('"index.html","assets/**/*"', '"index.html","localization.js","assets/**/*"')
+          $package = $package.Replace('"index.html","assets/**/*"', '"index.html","localization.js","xtream-recent.js","assets/**/*"')
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'windows-project/package.json'), $package, [System.Text.UTF8Encoding]::new($false))
 
       - name: Set up Node.js
