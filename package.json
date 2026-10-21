@@ -1,0 +1,40 @@
+{
+  "name": "myiptv-windows",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MY IPTV Windows 11 player-only desktop beta",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis portable"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.myiptv.windows",
+    "productName": "MY IPTV",
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "assets/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/app.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
