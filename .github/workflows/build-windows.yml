@@ -10,10 +10,12 @@ on:
       - 'xtream-recent.js'
       - 'premium-layout.css'
       - 'player-diagnostics.js'
+      - 'fullscreen-player.js'
+      - 'catalog-layout.css'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -42,12 +44,14 @@ jobs:
           Copy-Item -LiteralPath 'xtream-recent.js' -Destination 'windows-project/xtream-recent.js'
           Copy-Item -LiteralPath 'premium-layout.css' -Destination 'windows-project/premium-layout.css'
           Copy-Item -LiteralPath 'player-diagnostics.js' -Destination 'windows-project/player-diagnostics.js'
+          Copy-Item -LiteralPath 'fullscreen-player.js' -Destination 'windows-project/fullscreen-player.js'
+          Copy-Item -LiteralPath 'catalog-layout.css' -Destination 'windows-project/catalog-layout.css'
           $html = Get-Content -Raw -Encoding UTF8 'windows-project/index.html'
-          $html = $html.Replace('</head>', '<link rel="stylesheet" href="premium-layout.css"></head>')
-          $html = $html.Replace('</body>', '<script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.js"></script><script src="xtream-recent.js"></script><script src="player-diagnostics.js"></script><script src="localization.js"></script></body>')
+          $html = $html.Replace('</head>', '<link rel="stylesheet" href="premium-layout.css"><link rel="stylesheet" href="catalog-layout.css"></head>')
+          $html = $html.Replace('</body>', '<script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.js"></script><script src="xtream-recent.js"></script><script src="player-diagnostics.js"></script><script src="fullscreen-player.js"></script><script src="localization.js"></script></body>')
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'windows-project/index.html'), $html, [System.Text.UTF8Encoding]::new($false))
           $package = Get-Content -Raw -Encoding UTF8 'windows-project/package.json'
-          $package = $package.Replace('"index.html","assets/**/*"', '"index.html","localization.js","xtream-recent.js","premium-layout.css","player-diagnostics.js","assets/**/*"')
+          $package = $package.Replace('"index.html","assets/**/*"', '"index.html","localization.js","xtream-recent.js","premium-layout.css","player-diagnostics.js","fullscreen-player.js","catalog-layout.css","assets/**/*"')
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'windows-project/package.json'), $package, [System.Text.UTF8Encoding]::new($false))
 
       - name: Set up Node.js
@@ -71,3 +75,13 @@ jobs:
           name: MY-IPTV-Windows11-Installers
           path: windows-project/dist/*.exe
           if-no-files-found: error
+
+      - name: Publish Windows beta release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: windows-beta-latest
+          name: MY IPTV Windows 11 Beta
+          prerelease: true
+          make_latest: false
+          files: windows-project/dist/*.exe
+          fail_on_unmatched_files: true
